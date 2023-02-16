@@ -194,7 +194,8 @@ public class SuperheroeRestControllerIntegrationTest {
 		Mockito.when(this.repository.save(Mockito.any(Superheroe.class))).thenReturn(null);
 
 		final var path = PATH_BASE;
-		final var mvcResult = this.mockMvc.perform(post(path)).andExpect(status().isBadRequest()).andReturn();
+		final var mvcResult = this.mockMvc.perform(post(path).content("").contentType(APPLICATION_JSON))
+				.andExpect(status().isBadRequest()).andReturn();
 
 		final var responseBodyS = mvcResult.getResponse().getContentAsString();
 		final var responseBody = this.gson.fromJson(responseBodyS, Superheroe.class);
