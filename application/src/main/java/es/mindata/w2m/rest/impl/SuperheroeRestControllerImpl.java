@@ -1,6 +1,7 @@
 package es.mindata.w2m.rest.impl;
 
 import static es.mindata.w2m.rest.impl.SuperheroeRestControllerImpl.PATH_BASE;
+import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 
 import java.util.List;
 
@@ -63,10 +64,9 @@ public class SuperheroeRestControllerImpl extends AEntityRestControllerImpl<Supe
 	@Override
 	public ResponseEntity<List<Superheroe>> searchByNombre(@RequestParam String nombre) {
 		log.info("Pasando por searchByNombre");
+		final var results = this.getService().searchByNombre(nombre);
 
-		final List<Superheroe> results = this.getService().searchByNombre(nombre);
-
-		if (null != results && 0 < results.size()) {
+		if (isNotEmpty(results)) {
 			return ResponseEntity.ok(results);
 
 		} else {

@@ -76,15 +76,15 @@ public class SuperheroeRestControllerIntegrationTest {
 
 	@Test
 	void getAll_shouldReturnAllSuperheroes() throws Exception {
-		final List<Superheroe> expResults = this.superheroes;
+		final var expResults = this.superheroes;
 		Mockito.when(this.repository.findAll()).thenReturn(expResults);
 
-		final String path = PATH_BASE;
+		final var path = PATH_BASE;
 		final MvcResult mvcResult = this.mockMvc.perform(get(path)).andExpect(status().isOk())
 				.andExpect(content().contentType(APPLICATION_JSON))
 				.andExpect(jsonPath("$.length()", is(expResults.size()))).andReturn();
 
-		final String responseBodyS = mvcResult.getResponse().getContentAsString();
+		final var responseBodyS = mvcResult.getResponse().getContentAsString();
 		final List<Superheroe> responseBody = this.gson.fromJson(responseBodyS, new TypeToken<List<Superheroe>>() {
 		}.getType());
 
@@ -98,12 +98,12 @@ public class SuperheroeRestControllerIntegrationTest {
 	void getAll_shouldReturnNoSuperheroes() throws Exception {
 		Mockito.when(this.repository.findAll()).thenReturn(new ArrayList<Superheroe>());
 
-		final String path = PATH_BASE;
+		final var path = PATH_BASE;
 		final MvcResult mvcResult = this.mockMvc.perform(get(path)).andExpect(status().isNoContent())
 				.andExpect(jsonPath("$").doesNotExist()).andReturn();
 
-		final String responseBodyS = mvcResult.getResponse().getContentAsString();
-		final List<Superheroe> responseBody = this.gson.fromJson(responseBodyS, new TypeToken<List<Superheroe>>() {
+		final var responseBodyS = mvcResult.getResponse().getContentAsString();
+		final var responseBody = this.gson.fromJson(responseBodyS, new TypeToken<List<Superheroe>>() {
 		}.getType());
 
 		assertThat(mvcResult.getResponse().getStatus()).isEqualTo(NO_CONTENT.value());
@@ -112,17 +112,17 @@ public class SuperheroeRestControllerIntegrationTest {
 
 	@Test
 	void getById_shouldReturnSuperheroeById() throws Exception {
-		final Long superheroeIdParam = 1L;
+		final var superheroeIdParam = 1L;
 
-		final Superheroe expResult = this.superheroes.get(0);
+		final var expResult = this.superheroes.get(0);
 		Mockito.when(this.repository.findById(superheroeIdParam)).thenReturn(Optional.ofNullable(expResult));
 
-		final String path = PATH_BASE + "/" + superheroeIdParam;
+		final var path = PATH_BASE + "/" + superheroeIdParam;
 		final MvcResult mvcResult = this.mockMvc.perform(get(path)).andExpect(status().isOk())
 				.andExpect(content().contentType(APPLICATION_JSON)).andReturn();
 
-		final String responseBodyS = mvcResult.getResponse().getContentAsString();
-		final Superheroe responseBody = this.gson.fromJson(responseBodyS, Superheroe.class);
+		final var responseBodyS = mvcResult.getResponse().getContentAsString();
+		final var responseBody = this.gson.fromJson(responseBodyS, Superheroe.class);
 
 		assertThat(mvcResult.getResponse().getStatus()).isEqualTo(OK.value());
 		assertThat(responseBody).isNotNull();
@@ -131,15 +131,15 @@ public class SuperheroeRestControllerIntegrationTest {
 
 	@Test
 	void getById_shouldReturnNotFoundForNonexistentId() throws Exception {
-		final Long superheroeId = 1L;
+		final var superheroeId = 1L;
 		Mockito.when(this.repository.findById(superheroeId)).thenReturn(Optional.empty());
 
-		final String path = PATH_BASE + "/" + superheroeId;
+		final var path = PATH_BASE + "/" + superheroeId;
 		final MvcResult mvcResult = this.mockMvc.perform(get(path)).andExpect(status().isNotFound())
 				.andExpect(jsonPath("$").doesNotExist()).andReturn();
 
-		final String responseBodyS = mvcResult.getResponse().getContentAsString();
-		final Superheroe responseBody = this.gson.fromJson(responseBodyS, Superheroe.class);
+		final var responseBodyS = mvcResult.getResponse().getContentAsString();
+		final var responseBody = this.gson.fromJson(responseBodyS, Superheroe.class);
 
 		assertThat(mvcResult.getResponse().getStatus()).isEqualTo(NOT_FOUND.value());
 		assertThat(responseBody).isNull();
@@ -147,18 +147,18 @@ public class SuperheroeRestControllerIntegrationTest {
 
 	@Test
 	void searchByNombre_shouldReturnSuperheroesWithNombreContainingParameter() throws Exception {
-		final String nombreParam = "mano";
+		final var nombreParam = "mano";
 
-		final List<Superheroe> expResults = this.superheroes.stream()
-				.filter(s -> containsIgnoreCase(s.getNombre(), nombreParam)).collect(toList());
+		final var expResults = this.superheroes.stream().filter(s -> containsIgnoreCase(s.getNombre(), nombreParam))
+				.collect(toList());
 		Mockito.when(this.repository.findByNombreContainingIgnoreCase(nombreParam)).thenReturn(expResults);
 
-		final String path = PATH_BASE + "/" + PATH_SEARCH + "/?nombre=" + nombreParam;
-		final MvcResult mvcResult = this.mockMvc.perform(get(path)).andExpect(status().isOk())
+		final var path = PATH_BASE + "/" + PATH_SEARCH + "/?nombre=" + nombreParam;
+		final var mvcResult = this.mockMvc.perform(get(path)).andExpect(status().isOk())
 				.andExpect(content().contentType(APPLICATION_JSON))
 				.andExpect(jsonPath("$.length()", is(expResults.size()))).andReturn();
 
-		final String responseBodyS = mvcResult.getResponse().getContentAsString();
+		final var responseBodyS = mvcResult.getResponse().getContentAsString();
 		final List<Superheroe> responseBody = this.gson.fromJson(responseBodyS, new TypeToken<List<Superheroe>>() {
 		}.getType());
 
@@ -171,18 +171,18 @@ public class SuperheroeRestControllerIntegrationTest {
 
 	@Test
 	void create_shouldCreateSuperheroe() throws Exception {
-		final Superheroe reqBody = new Superheroe("Create Superheroe");
+		final var reqBody = new Superheroe("Create Superheroe");
 
-		final Superheroe expResult = new Superheroe(4L, "Create Superheroe");
+		final var expResult = new Superheroe(4L, "Create Superheroe");
 		Mockito.when(this.repository.save(reqBody)).thenReturn(expResult);
 
-		final String path = PATH_BASE;
-		final MvcResult mvcResult = this.mockMvc
+		final var path = PATH_BASE;
+		final var mvcResult = this.mockMvc
 				.perform(post(path).content(this.gson.toJson(reqBody)).contentType(APPLICATION_JSON))
 				.andExpect(status().isOk()).andExpect(content().contentType(APPLICATION_JSON)).andReturn();
 
-		final String responseBodyS = mvcResult.getResponse().getContentAsString();
-		final Superheroe responseBody = this.gson.fromJson(responseBodyS, Superheroe.class);
+		final var responseBodyS = mvcResult.getResponse().getContentAsString();
+		final var responseBody = this.gson.fromJson(responseBodyS, Superheroe.class);
 
 		assertThat(mvcResult.getResponse().getStatus()).isEqualTo(OK.value());
 		assertThat(responseBody).isNotNull();
@@ -191,18 +191,13 @@ public class SuperheroeRestControllerIntegrationTest {
 
 	@Test
 	void create_shouldNotCreateSuperheroe() throws Exception {
-		final Superheroe reqBody = null;
+		Mockito.when(this.repository.save(Mockito.any(Superheroe.class))).thenReturn(null);
 
-		final Superheroe expResult = null;
-		Mockito.when(this.repository.save(Mockito.any(Superheroe.class))).thenReturn(expResult);
+		final var path = PATH_BASE;
+		final var mvcResult = this.mockMvc.perform(post(path)).andExpect(status().isBadRequest()).andReturn();
 
-		final String path = PATH_BASE;
-		final MvcResult mvcResult = this.mockMvc
-				.perform(post(path).content(this.gson.toJson(reqBody)).contentType(APPLICATION_JSON))
-				.andExpect(status().isBadRequest()).andReturn();
-
-		final String responseBodyS = mvcResult.getResponse().getContentAsString();
-		final Superheroe responseBody = this.gson.fromJson(responseBodyS, Superheroe.class);
+		final var responseBodyS = mvcResult.getResponse().getContentAsString();
+		final var responseBody = this.gson.fromJson(responseBodyS, Superheroe.class);
 
 		assertThat(mvcResult.getResponse().getStatus()).isEqualTo(BAD_REQUEST.value());
 		assertThat(responseBody).isNull();
@@ -210,19 +205,19 @@ public class SuperheroeRestControllerIntegrationTest {
 
 	@Test
 	void create_shouldUpdateSuperheroe() throws Exception {
-		final Superheroe reqBody = this.superheroes.get(0);
+		final var reqBody = this.superheroes.get(0);
 		reqBody.setNombre("Batman");
 
-		final Superheroe expResult = new Superheroe(1L, "Batman");
+		final var expResult = new Superheroe(1L, "Batman");
 		Mockito.when(this.repository.existsById(reqBody.getId())).thenReturn(true);
 
-		final String path = PATH_BASE;
-		final MvcResult mvcResult = this.mockMvc
+		final var path = PATH_BASE;
+		final var mvcResult = this.mockMvc
 				.perform(put(path).content(this.gson.toJson(reqBody)).contentType(APPLICATION_JSON))
 				.andExpect(status().isOk()).andExpect(content().contentType(APPLICATION_JSON)).andReturn();
 
-		final String responseBodyS = mvcResult.getResponse().getContentAsString();
-		final Superheroe responseBody = this.gson.fromJson(responseBodyS, Superheroe.class);
+		final var responseBodyS = mvcResult.getResponse().getContentAsString();
+		final var responseBody = this.gson.fromJson(responseBodyS, Superheroe.class);
 
 		assertThat(mvcResult.getResponse().getStatus()).isEqualTo(OK.value());
 		assertThat(responseBody).isNotNull();
@@ -231,17 +226,17 @@ public class SuperheroeRestControllerIntegrationTest {
 
 	@Test
 	void create_shouldNotUpdateSuperheroe() throws Exception {
-		final Superheroe reqBody = new Superheroe("Batman");
+		final var reqBody = new Superheroe("Batman");
 
 		Mockito.when(this.repository.existsById(reqBody.getId())).thenReturn(false);
 
-		final String path = PATH_BASE;
-		final MvcResult mvcResult = this.mockMvc
+		final var path = PATH_BASE;
+		final var mvcResult = this.mockMvc
 				.perform(put(path).content(this.gson.toJson(reqBody)).contentType(APPLICATION_JSON))
 				.andExpect(status().isNotFound()).andReturn();
 
-		final String responseBodyS = mvcResult.getResponse().getContentAsString();
-		final Superheroe responseBody = this.gson.fromJson(responseBodyS, Superheroe.class);
+		final var responseBodyS = mvcResult.getResponse().getContentAsString();
+		final var responseBody = this.gson.fromJson(responseBodyS, Superheroe.class);
 
 		assertThat(mvcResult.getResponse().getStatus()).isEqualTo(NOT_FOUND.value());
 		assertThat(responseBody).isNull();
@@ -249,12 +244,12 @@ public class SuperheroeRestControllerIntegrationTest {
 
 	@Test
 	void create_shouldDeleteSuperheroe() throws Exception {
-		final Long superheroeIdParam = 1L;
+		final var superheroeIdParam = 1L;
 
 		Mockito.when(this.repository.existsById(superheroeIdParam)).thenReturn(true);
 
-		final String path = PATH_BASE + "/" + superheroeIdParam;
-		final MvcResult mvcResult = this.mockMvc.perform(delete(path)).andExpect(status().isNoContent())
+		final var path = PATH_BASE + "/" + superheroeIdParam;
+		final var mvcResult = this.mockMvc.perform(delete(path)).andExpect(status().isNoContent())
 				.andExpect(jsonPath("$").doesNotExist()).andReturn();
 
 		assertThat(mvcResult.getResponse().getStatus()).isEqualTo(NO_CONTENT.value());
@@ -262,12 +257,12 @@ public class SuperheroeRestControllerIntegrationTest {
 
 	@Test
 	void create_shouldNotDeleteSuperheroe() throws Exception {
-		final Long superheroeIdParam = 10L;
+		final var superheroeIdParam = 10L;
 
 		Mockito.when(this.repository.existsById(superheroeIdParam)).thenReturn(false);
 
-		final String path = PATH_BASE + "/" + superheroeIdParam;
-		final MvcResult mvcResult = this.mockMvc.perform(delete(path)).andExpect(status().isNotFound())
+		final var path = PATH_BASE + "/" + superheroeIdParam;
+		final var mvcResult = this.mockMvc.perform(delete(path)).andExpect(status().isNotFound())
 				.andExpect(jsonPath("$").doesNotExist()).andReturn();
 
 		assertThat(mvcResult.getResponse().getStatus()).isEqualTo(NOT_FOUND.value());

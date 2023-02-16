@@ -45,10 +45,10 @@ public class SuperheroeServiceTest {
 
 	@Test
 	void getAll_shouldReturnAllSuperheroes() throws Exception {
-		final List<Superheroe> expResults = this.superheroes;
+		final var expResults = this.superheroes;
 		Mockito.when(this.repository.findAll()).thenReturn(expResults);
 
-		final List<Superheroe> results = this.service.getAll();
+		final var results = this.service.getAll();
 
 		assertThat(results).isNotNull();
 		assertThat(results.size()).isEqualTo(expResults.size());
@@ -59,19 +59,19 @@ public class SuperheroeServiceTest {
 	void getAll_shouldReturnNoSuperheroes() throws Exception {
 		Mockito.when(this.repository.findAll()).thenReturn(new ArrayList<Superheroe>());
 
-		final List<Superheroe> results = this.service.getAll();
+		final var results = this.service.getAll();
 
 		assertThat(results).isEmpty();
 	}
 
 	@Test
 	void getById_shouldReturnSuperheroeById() throws Exception {
-		final Long superheroeIdParam = 1L;
+		final var superheroeIdParam = 1L;
 
-		final Superheroe expResult = this.superheroes.get(0);
+		final var expResult = this.superheroes.get(0);
 		Mockito.when(this.repository.findById(superheroeIdParam)).thenReturn(Optional.ofNullable(expResult));
 
-		final Optional<Superheroe> result = this.service.getById(superheroeIdParam);
+		final var result = this.service.getById(superheroeIdParam);
 
 		assertThat(result.isPresent()).isTrue();
 		assertThat(result.get()).isNotNull();
@@ -80,23 +80,23 @@ public class SuperheroeServiceTest {
 
 	@Test
 	void getById_shouldReturnNotFoundForNonexistentId() throws Exception {
-		final Long superheroeIdParam = 1L;
+		final var superheroeIdParam = 1L;
 		Mockito.when(this.repository.findById(superheroeIdParam)).thenReturn(Optional.empty());
 
-		final Optional<Superheroe> result = this.service.getById(superheroeIdParam);
+		final var result = this.service.getById(superheroeIdParam);
 
 		assertThat(result.isPresent()).isFalse();
 	}
 
 	@Test
 	void searchByNombre_shouldReturnSuperheroesWithNombreContainingParameter() throws Exception {
-		final String nombreParam = "mano";
+		final var nombreParam = "mano";
 
-		final List<Superheroe> expResults = this.superheroes.stream()
-				.filter(s -> containsIgnoreCase(s.getNombre(), nombreParam)).collect(toList());
+		final var expResults = this.superheroes.stream().filter(s -> containsIgnoreCase(s.getNombre(), nombreParam))
+				.collect(toList());
 		Mockito.when(this.repository.findByNombreContainingIgnoreCase(nombreParam)).thenReturn(expResults);
 
-		final List<Superheroe> results = this.service.searchByNombre(nombreParam);
+		final var results = this.service.searchByNombre(nombreParam);
 
 		assertThat(results).isNotNull();
 		assertThat(results.size()).isEqualTo(expResults.size());
@@ -106,12 +106,12 @@ public class SuperheroeServiceTest {
 
 	@Test
 	void create_shouldCreateSuperheroe() throws Exception {
-		final Superheroe newSuperheroe = new Superheroe("Create Superheroe");
+		final var newSuperheroe = new Superheroe("Create Superheroe");
 
-		final Superheroe expResult = new Superheroe(4L, "Create Superheroe");
+		final var expResult = new Superheroe(4L, "Create Superheroe");
 		Mockito.when(this.repository.save(newSuperheroe)).thenReturn(expResult);
 
-		final Superheroe result = this.service.create(newSuperheroe);
+		final var result = this.service.create(newSuperheroe);
 
 		assertThat(result).isNotNull();
 		assertThat(result).isEqualTo(expResult);
@@ -119,13 +119,13 @@ public class SuperheroeServiceTest {
 
 	@Test
 	void create_shouldUpdateSuperheroe() throws Exception {
-		final Superheroe updSuperheroe = this.superheroes.get(0);
+		final var updSuperheroe = this.superheroes.get(0);
 		updSuperheroe.setNombre("Batman");
 
-		final Superheroe expResult = new Superheroe(1L, "Batman");
+		final var expResult = new Superheroe(1L, "Batman");
 		Mockito.when(this.repository.existsById(updSuperheroe.getId())).thenReturn(true);
 
-		final Optional<Superheroe> result = this.service.update(expResult);
+		final var result = this.service.update(expResult);
 
 		assertThat(result.isPresent()).isTrue();
 		assertThat(result.get()).isNotNull();
@@ -134,33 +134,33 @@ public class SuperheroeServiceTest {
 
 	@Test
 	void create_shouldNotUpdateSuperheroe() throws Exception {
-		final Superheroe updSuperheroe = new Superheroe("Batman");
+		final var updSuperheroe = new Superheroe("Batman");
 
 		Mockito.when(this.repository.existsById(updSuperheroe.getId())).thenReturn(false);
 
-		final Optional<Superheroe> result = this.service.update(updSuperheroe);
+		final var result = this.service.update(updSuperheroe);
 
 		assertThat(result.isPresent()).isFalse();
 	}
 
 	@Test
 	void create_shouldDeleteSuperheroe() throws Exception {
-		final Long superheroeIdParam = 1L;
+		final var superheroeIdParam = 1L;
 
 		Mockito.when(this.repository.existsById(superheroeIdParam)).thenReturn(true);
 
-		final boolean result = this.service.delete(superheroeIdParam);
+		final var result = this.service.delete(superheroeIdParam);
 
 		assertThat(result).isTrue();
 	}
 
 	@Test
 	void create_shouldNotDeleteSuperheroe() throws Exception {
-		final Long superheroeIdParam = 1L;
+		final var superheroeIdParam = 1L;
 
 		Mockito.when(this.repository.existsById(superheroeIdParam)).thenReturn(false);
 
-		final boolean result = this.service.delete(superheroeIdParam);
+		final var result = this.service.delete(superheroeIdParam);
 
 		assertThat(result).isFalse();
 	}

@@ -43,7 +43,7 @@ public abstract class AEntityServiceImpl<E extends IEntity<PK>, PK> implements I
 		Optional<E> result = Optional.empty();
 
 		if (null != entity.getId()) {
-			boolean exists = this.exists(entity.getId());
+			final var exists = this.exists(entity.getId());
 
 			if (exists) {
 				this.repository.save(entity);
@@ -56,7 +56,7 @@ public abstract class AEntityServiceImpl<E extends IEntity<PK>, PK> implements I
 
 	@Override
 	public boolean delete(PK id) {
-		boolean result = this.exists(id);
+		final var result = this.exists(id);
 
 		if (result) {
 			this.repository.deleteById(id);

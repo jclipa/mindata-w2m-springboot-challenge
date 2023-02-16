@@ -34,7 +34,7 @@ public abstract class AEntityRestControllerImpl<E extends IEntity<PK>, PK> imple
 	@GetMapping(produces = APPLICATION_JSON_VALUE)
 	@Override
 	public ResponseEntity<List<E>> getAll() {
-		final List<E> results = this.service.getAll();
+		final var results = this.service.getAll();
 
 		if (null != results && 0 < results.size()) {
 			return ResponseEntity.ok(results);
@@ -48,7 +48,7 @@ public abstract class AEntityRestControllerImpl<E extends IEntity<PK>, PK> imple
 	@GetMapping(value = PATH_BY_ID, produces = APPLICATION_JSON_VALUE)
 	@Override
 	public ResponseEntity<E> getById(@PathVariable PK id) {
-		final Optional<E> optional = this.service.getById(id);
+		final var optional = this.service.getById(id);
 
 		if (optional.isPresent()) {
 			return ResponseEntity.ok(optional.get());
@@ -88,7 +88,7 @@ public abstract class AEntityRestControllerImpl<E extends IEntity<PK>, PK> imple
 	@Override
 	public ResponseEntity<Void> delete(@PathVariable PK id) {
 		ResponseEntity<Void> result = ResponseEntity.notFound().build();
-		boolean deleted = this.service.delete(id);
+		final var deleted = this.service.delete(id);
 
 		if (deleted) {
 			result = ResponseEntity.noContent().build();

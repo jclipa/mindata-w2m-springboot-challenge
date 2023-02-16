@@ -14,11 +14,12 @@ public class TimedExecutionAspect {
 
 	@Around("@annotation(es.mindata.w2m.annotations.TimedExecution)")
 	public Object timeMethodExecution(ProceedingJoinPoint joinPoint) throws Throwable {
-		long startTime = System.nanoTime();
-		Object result = joinPoint.proceed();
-		long endTime = System.nanoTime();
-		long duration = (endTime - startTime) / 1000000;
-		log.info("Método: {} - Tiempo total de ejecución: {} milisegundos", joinPoint.getSignature().toShortString(), duration);
+		final var startTime = System.nanoTime();
+		final var result = joinPoint.proceed();
+		final var endTime = System.nanoTime();
+		final var duration = (endTime - startTime) / 1000000;
+		log.info("Método: {} - Tiempo total de ejecución: {} milisegundos", joinPoint.getSignature().toShortString(),
+				duration);
 		return result;
 	}
 
