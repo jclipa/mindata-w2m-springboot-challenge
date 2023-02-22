@@ -17,12 +17,20 @@
 	<description>Technical Spring Boot Challenge</description>
 
 	<properties>
-		<java.version>17</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<resource.delimiter>@</resource.delimiter>
 		<failOnMissingWebXml>false</failOnMissingWebXml>
 
+		<java.version>17</java.version>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
+
 		<springdoc.openapi.version>2.0.2</springdoc.openapi.version>
 		<apache.collections4.version>4.4</apache.collections4.version>
+
+		<junit-jupiter.version>5.9.1</junit-jupiter.version>
+		<jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
+		<maven-surefire-plugin.version>3.0.0-M9</maven-surefire-plugin.version>
 	</properties>
 
 	<dependencies>
@@ -79,6 +87,12 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>org.jacoco</groupId>
+			<artifactId>jacoco-maven-plugin</artifactId>
+			<version>${jacoco-maven-plugin.version}</version>
+		</dependency>
+
 		<!-- Logging -->
 
 		<dependency>
@@ -132,6 +146,77 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${jacoco-maven-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>prepare-agent</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>check</id>
+						<phase>test</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<rules>
+						<rule>
+							<element>PACKAGE</element>
+							<excludes>
+								<exclude>*Test</exclude>
+							</excludes>
+							<limits>
+								<limit>
+									<counter>CLASS</counter>
+									<value>COVEREDRATIO</value>
+									<minimum>0.7</minimum>
+								</limit>
+							</limits>
+						</rule>
+						<rule>
+							<element>CLASS</element>
+							<excludes>
+								<exclude>*Test</exclude>
+							</excludes>
+							<limits>
+								<limit>
+									<counter>METHOD</counter>
+									<value>COVEREDRATIO</value>
+									<minimum>0.7</minimum>
+								</limit>
+							</limits>
+						</rule>
+					</rules>
+					<excludes>
+						<exclude>**/*es/mindata/w2m/aspects/**</exclude>
+						<exclude>**/*es/mindata/w2m/annotations/**</exclude>
+						<exclude>**/*es/mindata/w2m/application/**</exclude>
+						<exclude>**/*es/mindata/w2m/constants/**</exclude>
+						<exclude>**/*es/mindata/w2m/repository/**</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+
 		</plugins>
 	</build>
 
