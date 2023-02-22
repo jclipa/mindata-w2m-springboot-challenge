@@ -9,12 +9,14 @@ import es.mindata.w2m.domain.IEntity;
 import es.mindata.w2m.repository.IEntityRepository;
 import es.mindata.w2m.service.IEntityService;
 import lombok.Data;
+import lombok.Generated;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 public abstract class AEntityServiceImpl<E extends IEntity<PK>, PK> implements IEntityService<E, PK> {
 
+	@Generated
 	@Autowired
 	private IEntityRepository<E, PK> repository;
 
