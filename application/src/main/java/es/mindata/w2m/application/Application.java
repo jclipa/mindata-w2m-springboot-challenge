@@ -1,4 +1,4 @@
-package es.mindata.w2m;
+package es.mindata.w2m.application;
 
 import static es.mindata.w2m.constants.AppConstants.PACKAGE_BASE;
 import static es.mindata.w2m.constants.AppConstants.PACKAGE_DOMAIN;

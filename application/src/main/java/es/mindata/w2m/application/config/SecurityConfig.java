@@ -1,4 +1,4 @@
-package es.mindata.w2m.config;
+package es.mindata.w2m.application.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
